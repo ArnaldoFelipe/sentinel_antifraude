@@ -1,3 +1,4 @@
-confluent-kafka
-scikit-learn
-pandas
+confluent-kafka==2.3.0
+pandas==2.2.1
+scikit-learn==1.9.1
+joblib>=1.4.0

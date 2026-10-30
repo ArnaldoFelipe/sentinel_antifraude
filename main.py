@@ -6,7 +6,7 @@ import joblib
 modelo_ia = joblib.load('modelo_antifraude.pkl')
 
 conf = {
-    'bootstrap.servers': '127.0.0.1:9092'
+    'bootstrap.servers': 'kafka:29092'
 }
 
 conf_consumidor = conf.copy()
@@ -40,16 +40,16 @@ try:
         predicao = modelo_ia.predict(dados_para_ia)[0]
 
         if predicao == 1:
-             status_decidido = 'REJEITADA'
+             status_decidido = 'RECUSADA'
         else:
              status_decidido = 'APROVADA'
 
         resultado_dto = {
             'idTransacao': id_tx,
-            'status': status_decidido
+            'statusTransacao': status_decidido
         }
 
-        payload_resposta = json.dump(resultado_dto).encode('utf-8')
+        payload_resposta = json.dumps(resultado_dto).encode('utf-8')
         produtor.produce(topico_saida, value= payload_resposta)
         produtor.flush()
 
